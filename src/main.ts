@@ -1,4 +1,4 @@
-import './styles/main.css';
+import '../src/styles/main.css';
 import { App } from './App';
 import { initRouter } from './router';
 
