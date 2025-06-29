@@ -2,10 +2,6 @@ import { Header, initHeader } from './components/Header';
 import { Footer, initFooter } from './components/Footer';
 
 export function App() {
-  // Инициализируем компоненты сразу
-  initHeader();
-  initFooter();
-  
   return `
     <div class="app">
       ${Header()}
@@ -13,4 +9,11 @@ export function App() {
       ${Footer()}
     </div>
   `;
+}
+
+// Инициализация компонентов после создания DOM
+export function initApp() {
+  // Инициализируем компоненты в правильном порядке
+  initHeader();
+  initFooter();
 } 

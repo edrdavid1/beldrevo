@@ -3,7 +3,7 @@ import { Products, initProducts } from '../pages/Products';
 import { ProductDetail, initProductDetail } from '../pages/ProductDetail';
 import { Orders, initOrders } from '../pages/Orders';
 import { About, initAbout } from '../pages/About';
-import { NotFound } from '../pages/NotFound';
+import { NotFound, initNotFound } from '../pages/NotFound';
 
 const routes: Record<string, () => string> = {
   '/': Home,
@@ -27,9 +27,7 @@ export function router() {
   
   const hash = location.hash.replace('#', '') || '/';
   
-  // Не перерисовываем, если уже на этой странице
-  if (currentRoute === hash) return;
-  
+  // Всегда перерисовываем при вызове роутера (для обновления языка)
   currentRoute = hash;
   
   // Product detail route
@@ -47,6 +45,9 @@ export function router() {
   const initFn = inits[hash];
   if (initFn) {
     initFn();
+  } else {
+    // Инициализируем NotFound для неизвестных маршрутов
+    initNotFound();
   }
 }
 

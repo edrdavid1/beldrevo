@@ -1,4 +1,4 @@
-import { getLang } from '../store';
+import { getLang, subscribe } from '../store';
 import { translations } from '../data/translations';
 
 // NotFound page stub
@@ -11,4 +11,17 @@ export function NotFound() {
       <a href="#/" class="notfound-page__btn">${t.notfound.to_home}</a>
     </section>
   `;
+}
+
+export function initNotFound() {
+  subscribe(() => {
+    const main = document.getElementById('app-main');
+    if (main && location.hash.replace('#', '') !== '/' && 
+        !location.hash.startsWith('#/products') && 
+        !location.hash.startsWith('#/orders') && 
+        !location.hash.startsWith('#/about') && 
+        !location.hash.startsWith('#/product/')) {
+      main.innerHTML = NotFound();
+    }
+  });
 } 

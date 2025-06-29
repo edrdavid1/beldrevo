@@ -14,12 +14,16 @@ export function getLang(): Lang {
 export function setLang(newLang: Lang) {
   if (lang !== newLang) {
     lang = newLang;
-    listeners.forEach(fn => fn());
+    
+    listeners.forEach(fn => {
+      fn();
+    });
     
     // Дебаунсинг для предотвращения множественных перерисовок
     if (routerTimeout) {
       clearTimeout(routerTimeout);
     }
+    
     routerTimeout = setTimeout(() => {
       router();
       routerTimeout = null;
@@ -31,6 +35,8 @@ export function subscribe(fn: () => void) {
   listeners.push(fn);
   return () => {
     const idx = listeners.indexOf(fn);
-    if (idx !== -1) listeners.splice(idx, 1);
+    if (idx !== -1) {
+      listeners.splice(idx, 1);
+    }
   };
 } 

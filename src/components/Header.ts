@@ -34,31 +34,43 @@ export function Header() {
 }
 
 export function initHeader() {
-  subscribe(() => {
-    const header = document.querySelector('.header');
-    if (header) {
-      header.outerHTML = Header();
-      // Инициализируем компоненты сразу
-      initLanguageSelector();
-      initHeaderLogo();
-      initMobileMenu();
-    }
-  });
-  
-  // Начальная инициализация
+  // Инициализируем обработчики сразу
   initLanguageSelector();
   initHeaderLogo();
   initMobileMenu();
+  
+  // Подписываемся на изменения языка
+  subscribe(() => {
+    const header = document.querySelector('.header');
+    if (header) {
+      const oldHeader = header.outerHTML;
+      header.outerHTML = Header();
+      
+      // Проверяем, действительно ли изменился контент
+      const newHeader = document.querySelector('.header');
+      if (newHeader && newHeader.outerHTML !== oldHeader) {
+        // Переинициализируем обработчики только если контент изменился
+        initLanguageSelector();
+        initHeaderLogo();
+        initMobileMenu();
+      }
+    }
+  });
 }
 
 function initHeaderLogo() {
   const logo = document.getElementById('header-logo');
   if (logo) {
-    logo.addEventListener('click', (e) => {
-      e.preventDefault();
-      location.hash = '/';
-    });
+    // Удаляем старые обработчики
+    logo.removeEventListener('click', handleLogoClick);
+    // Добавляем новый обработчик
+    logo.addEventListener('click', handleLogoClick);
   }
+}
+
+function handleLogoClick(e: Event) {
+  e.preventDefault();
+  location.hash = '/';
 }
 
 function initMobileMenu() {
@@ -68,23 +80,53 @@ function initMobileMenu() {
   const overlay = document.getElementById('header-nav-overlay');
 
   if (burger) {
-    burger.addEventListener('click', () => {
-      nav?.classList.add('header__nav--open');
-      if (close) close.style.display = 'flex';
-    });
+    // Удаляем старые обработчики
+    burger.removeEventListener('click', handleBurgerClick);
+    // Добавляем новый обработчик
+    burger.addEventListener('click', handleBurgerClick);
   }
 
   if (close) {
-    close.addEventListener('click', () => {
-      nav?.classList.remove('header__nav--open');
-      close.style.display = 'none';
-    });
+    // Удаляем старые обработчики
+    close.removeEventListener('click', handleCloseClick);
+    // Добавляем новый обработчик
+    close.addEventListener('click', handleCloseClick);
   }
 
   if (overlay) {
-    overlay.addEventListener('click', () => {
-      nav?.classList.remove('header__nav--open');
-      if (close) close.style.display = 'none';
-    });
+    // Удаляем старые обработчики
+    overlay.removeEventListener('click', handleOverlayClick);
+    // Добавляем новый обработчик
+    overlay.addEventListener('click', handleOverlayClick);
   }
+}
+
+function handleBurgerClick() {
+  const nav = document.querySelector('.header__nav');
+  const close = document.getElementById('header-close');
+  const burger = document.getElementById('header-burger');
+  
+  nav?.classList.add('header__nav--open');
+  if (close) close.style.display = 'flex';
+  if (burger) burger.style.display = 'none';
+}
+
+function handleCloseClick() {
+  const nav = document.querySelector('.header__nav');
+  const close = document.getElementById('header-close');
+  const burger = document.getElementById('header-burger');
+  
+  nav?.classList.remove('header__nav--open');
+  if (close) close.style.display = 'none';
+  if (burger) burger.style.display = 'flex';
+}
+
+function handleOverlayClick() {
+  const nav = document.querySelector('.header__nav');
+  const close = document.getElementById('header-close');
+  const burger = document.getElementById('header-burger');
+  
+  nav?.classList.remove('header__nav--open');
+  if (close) close.style.display = 'none';
+  if (burger) burger.style.display = 'flex';
 } 

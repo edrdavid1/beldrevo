@@ -21,8 +21,11 @@ export function initLanguageSelector() {
 }
 
 function handleLangClick(e: Event) {
-  const lang = (e.target as HTMLElement).getAttribute('data-lang');
-  if (lang) {
+  const target = e.target as HTMLElement;
+  const lang = target.getAttribute('data-lang');
+  
+  // Проверяем, что кнопка не отключена
+  if (lang && !target.hasAttribute('disabled')) {
     setLang(lang as 'ru' | 'be');
   }
 } 

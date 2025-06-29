@@ -1,9 +1,12 @@
 import './styles/main.css';
-import { App } from './App';
+import { App, initApp } from './App';
 import { initRouter } from './router';
 
 const root = document.getElementById('app') || createRoot();
 root.innerHTML = App();
+
+// Инициализируем компоненты после создания DOM
+initApp();
 initRouter();
 
 function createRoot() {
