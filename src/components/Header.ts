@@ -76,7 +76,6 @@ function handleLogoClick(e: Event) {
 function initMobileMenu() {
   const burger = document.getElementById('header-burger');
   const close = document.getElementById('header-close');
-  const nav = document.querySelector('.header__nav');
   const overlay = document.getElementById('header-nav-overlay');
 
   if (burger) {

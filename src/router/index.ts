@@ -19,8 +19,6 @@ const inits: Record<string, (() => void) | undefined> = {
   '/about': initAbout,
 };
 
-let currentRoute = '';
-
 export function router() {
   const main = document.getElementById('app-main');
   if (!main) return;
@@ -28,7 +26,6 @@ export function router() {
   const hash = location.hash.replace('#', '') || '/';
   
   // Всегда перерисовываем при вызове роутера (для обновления языка)
-  currentRoute = hash;
   
   // Product detail route
   if (hash.startsWith('/product/')) {
