@@ -174,7 +174,6 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 24px;
-  margin-left: 8px;
 }
 .products-preview__list {
   display: flex;
@@ -190,7 +189,7 @@ body {
   padding: 0;
 }
 .benefits__title {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 24px;
   margin-left: 8px;
@@ -724,7 +723,7 @@ body {
     transform: translateX(100%) translateZ(0);
     transition: transform 0.25s cubic-bezier(.4,0,.2,1);
     will-change: transform;
-    z-index: 1000;
+    z-index: 1002;
   }
   .header__nav--open {
     transform: translateX(0) translateZ(0);
@@ -739,6 +738,8 @@ body {
     transition: background 0.18s;
     will-change: background;
     transform: translateZ(0);
+    cursor: pointer;
+    pointer-events: auto;
   }
   .header__link:hover {
     background: #6b5436;
@@ -778,7 +779,7 @@ body {
     transform: translateX(100%) translateZ(0);
     transition: transform 0.25s cubic-bezier(.4,0,.2,1);
     will-change: transform;
-    z-index: 1000;
+    z-index: 1002;
   }
   .header__nav--open {
     transform: translateX(0) translateZ(0);
@@ -957,12 +958,11 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-top: 15px;
   }
   .product-detail__thumb {
     width: 70px;
     height: 70px;
-    object-fit: cover;
-    border-width: 1.5px;
   }
   .product-detail__info-col {
     gap: 6px;
@@ -1109,7 +1109,6 @@ body {
   justify-content: flex-end;
   text-align: right;
   padding-left: 0;
-  padding-right: 40px;
 }
 .benefit__img {
   flex: 1 1 40%;
@@ -1125,11 +1124,6 @@ body {
 }
 .benefit--green .benefit__text--right,
 .benefit--dark-bark .benefit__text--right {
-  order: 2;
-}
-.benefit--green .benefit__text--right,
-.benefit--dark-bark .benefit__text--right {
-  padding-left: 0;
   padding-right: 40px;
 }
 .benefit--light-brown .benefit__text {
@@ -1201,7 +1195,6 @@ body {
 }
 @media (max-width: 700px) {
   .benefits--grid {
-    padding: 0 8px;
   }
   .benefit {
     min-height: 170px;
@@ -1473,10 +1466,14 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-top: 15px;
   }
   .product-detail__thumb {
     width: 70px;
     height: 70px;
+  }
+  .product-detail__img-wrap {
+    margin: 0 auto;
   }
 } 
 

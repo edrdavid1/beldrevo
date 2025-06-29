@@ -24,9 +24,9 @@ export function Header() {
         <span class="header__close-bar header__close-bar2"></span>
       </button>
       <nav class="header__nav">
-        <a href="#/products" class="header__link">${t.products}</a>
-        <a href="#/orders" class="header__link">${t.orders}</a>
-        <a href="#/about" class="header__link">${t.about}</a>
+        <a href="#/products" class="header__link" data-route="/products">${t.products}</a>
+        <a href="#/orders" class="header__link" data-route="/orders">${t.orders}</a>
+        <a href="#/about" class="header__link" data-route="/about">${t.about}</a>
       </nav>
       <div class="header__nav-overlay" id="header-nav-overlay"></div>
     </header>
@@ -36,91 +36,95 @@ export function Header() {
 export function initHeader() {
   // Инициализируем обработчики сразу
   initLanguageSelector();
-  initHeaderLogo();
-  initMobileMenu();
+  initHeaderHandlers();
   
   // Подписываемся на изменения языка
   subscribe(() => {
     const header = document.querySelector('.header');
     if (header) {
-      const oldHeader = header.outerHTML;
       header.outerHTML = Header();
       
-      // Проверяем, действительно ли изменился контент
-      const newHeader = document.querySelector('.header');
-      if (newHeader && newHeader.outerHTML !== oldHeader) {
-        // Переинициализируем обработчики только если контент изменился
-        initLanguageSelector();
-        initHeaderLogo();
-        initMobileMenu();
-      }
+      // Переинициализируем обработчики после перерисовки
+      initLanguageSelector();
+      initHeaderHandlers();
     }
   });
 }
 
-function initHeaderLogo() {
-  const logo = document.getElementById('header-logo');
-  if (logo) {
-    // Удаляем старые обработчики
-    logo.removeEventListener('click', handleLogoClick);
-    // Добавляем новый обработчик
-    logo.addEventListener('click', handleLogoClick);
-  }
+function initHeaderHandlers() {
+  // Добавляем небольшую задержку для гарантии загрузки DOM
+  setTimeout(() => {
+    console.log('Инициализирую обработчики header');
+    
+    // Логотип
+    const logo = document.getElementById('header-logo');
+    if (logo) {
+      console.log('Найден логотип');
+      logo.addEventListener('click', (e) => {
+        console.log('Клик по логотипу');
+        e.preventDefault();
+        closeMobileMenu();
+        location.hash = '/';
+      });
+    }
+
+    // Бургер меню
+    const burger = document.getElementById('header-burger');
+    if (burger) {
+      console.log('Найден бургер');
+      burger.addEventListener('click', () => {
+        console.log('Клик по бургеру');
+        const nav = document.querySelector('.header__nav');
+        const close = document.getElementById('header-close');
+        
+        nav?.classList.add('header__nav--open');
+        if (close) close.style.display = 'flex';
+        burger.style.display = 'none';
+      });
+    }
+
+    // Кнопка закрытия
+    const close = document.getElementById('header-close');
+    if (close) {
+      console.log('Найдена кнопка закрытия');
+      close.addEventListener('click', () => {
+        console.log('Клик по кнопке закрытия');
+        closeMobileMenu();
+      });
+    }
+
+    // Оверлей
+    const overlay = document.getElementById('header-nav-overlay');
+    if (overlay) {
+      console.log('Найден оверлей');
+      overlay.addEventListener('click', () => {
+        console.log('Клик по оверлею');
+        closeMobileMenu();
+      });
+    }
+
+    // Ссылки навигации
+    const links = document.querySelectorAll('.header__link');
+    console.log('Найдено ссылок:', links.length);
+    links.forEach((link, index) => {
+      console.log(`Инициализирую ссылку ${index}:`, link.textContent);
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const route = link.getAttribute('data-route');
+        console.log('Клик по ссылке:', route);
+        
+        closeMobileMenu();
+        if (route) {
+          location.hash = route;
+        }
+      });
+    });
+  }, 10);
 }
 
-function handleLogoClick(e: Event) {
-  e.preventDefault();
-  location.hash = '/';
-}
-
-function initMobileMenu() {
-  const burger = document.getElementById('header-burger');
-  const close = document.getElementById('header-close');
-  const overlay = document.getElementById('header-nav-overlay');
-
-  if (burger) {
-    // Удаляем старые обработчики
-    burger.removeEventListener('click', handleBurgerClick);
-    // Добавляем новый обработчик
-    burger.addEventListener('click', handleBurgerClick);
-  }
-
-  if (close) {
-    // Удаляем старые обработчики
-    close.removeEventListener('click', handleCloseClick);
-    // Добавляем новый обработчик
-    close.addEventListener('click', handleCloseClick);
-  }
-
-  if (overlay) {
-    // Удаляем старые обработчики
-    overlay.removeEventListener('click', handleOverlayClick);
-    // Добавляем новый обработчик
-    overlay.addEventListener('click', handleOverlayClick);
-  }
-}
-
-function handleBurgerClick() {
-  const nav = document.querySelector('.header__nav');
-  const close = document.getElementById('header-close');
-  const burger = document.getElementById('header-burger');
-  
-  nav?.classList.add('header__nav--open');
-  if (close) close.style.display = 'flex';
-  if (burger) burger.style.display = 'none';
-}
-
-function handleCloseClick() {
-  const nav = document.querySelector('.header__nav');
-  const close = document.getElementById('header-close');
-  const burger = document.getElementById('header-burger');
-  
-  nav?.classList.remove('header__nav--open');
-  if (close) close.style.display = 'none';
-  if (burger) burger.style.display = 'flex';
-}
-
-function handleOverlayClick() {
+function closeMobileMenu() {
   const nav = document.querySelector('.header__nav');
   const close = document.getElementById('header-close');
   const burger = document.getElementById('header-burger');
