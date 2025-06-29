@@ -1,5 +1,4 @@
 import type { Product } from '../data/products';
-import '../styles/main.css';
 
 export function ProductCard(product: Product, lang: 'ru' | 'be', clickable = false) {
   return `

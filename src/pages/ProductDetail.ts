@@ -163,30 +163,4 @@ function showOrderModal() {
     }
   };
   document.addEventListener('keydown', handleEscape);
-}
-
-function initProductImageZoom() {
-  const wrap = document.querySelector('.product-detail__img-wrap');
-  const img = document.getElementById('main-product-img');
-  if (!wrap || !img) return;
-  let zoomed = false;
-  // Отключаем на мобильных
-  if (window.innerWidth < 700) return;
-  wrap.addEventListener('mousemove', e => {
-    if (!zoomed) return;
-    const event = e as MouseEvent;
-    const rect = wrap.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    img.style.transformOrigin = `${x}% ${y}%`;
-  });
-  wrap.addEventListener('mouseenter', () => {
-    zoomed = true;
-    img.classList.add('product-detail__img--zoomed');
-  });
-  wrap.addEventListener('mouseleave', () => {
-    zoomed = false;
-    img.classList.remove('product-detail__img--zoomed');
-    img.style.transformOrigin = '';
-  });
 } 
