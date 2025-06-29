@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Test</title>
+</head>
+<body>
+    <h1>Performance Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        // Тест времени загрузки
+        const startTime = performance.now();
+        
+        window.addEventListener('load', () => {
+            const loadTime = performance.now() - startTime;
+            results.innerHTML += `<p>Время загрузки: ${loadTime.toFixed(2)}ms</p>`;
+        });
+        
+        // Тест FPS
+        let frameCount = 0;
+        let lastTime = performance.now();
+        
+        function measureFPS() {
+            frameCount++;
+            const currentTime = performance.now();
+            
+            if (currentTime - lastTime >= 1000) {
+                const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+                results.innerHTML += `<p>FPS: ${fps}</p>`;
+                frameCount = 0;
+                lastTime = currentTime;
+            }
+            
+            requestAnimationFrame(measureFPS);
+        }
+        
+        measureFPS();
+        
+        // Тест памяти
+        if ('memory' in performance) {
+            setInterval(() => {
+                const memory = performance.memory;
+                results.innerHTML += `<p>Использование памяти: ${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB</p>`;
+            }, 5000);
+        }
+    </script>
+</body>
+</html> 

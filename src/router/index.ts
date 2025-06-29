@@ -1,0 +1,56 @@
+import { Home, initHome } from '../pages/Home';
+import { Products, initProducts } from '../pages/Products';
+import { ProductDetail, initProductDetail } from '../pages/ProductDetail';
+import { Orders, initOrders } from '../pages/Orders';
+import { About, initAbout } from '../pages/About';
+import { NotFound } from '../pages/NotFound';
+
+const routes: Record<string, () => string> = {
+  '/': Home,
+  '/products': Products,
+  '/orders': Orders,
+  '/about': About,
+};
+
+const inits: Record<string, (() => void) | undefined> = {
+  '/': initHome,
+  '/products': initProducts,
+  '/orders': initOrders,
+  '/about': initAbout,
+};
+
+let currentRoute = '';
+
+export function router() {
+  const main = document.getElementById('app-main');
+  if (!main) return;
+  
+  const hash = location.hash.replace('#', '') || '/';
+  
+  // Не перерисовываем, если уже на этой странице
+  if (currentRoute === hash) return;
+  
+  currentRoute = hash;
+  
+  // Product detail route
+  if (hash.startsWith('/product/')) {
+    main.innerHTML = ProductDetail();
+    // Инициализируем сразу
+    initProductDetail();
+    return;
+  }
+  
+  const page = routes[hash] || NotFound;
+  main.innerHTML = page();
+  
+  // Инициализация реактивности для страницы сразу
+  const initFn = inits[hash];
+  if (initFn) {
+    initFn();
+  }
+}
+
+export function initRouter() {
+  window.addEventListener('hashchange', router);
+  router();
+} 
